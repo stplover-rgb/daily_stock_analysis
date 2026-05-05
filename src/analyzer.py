@@ -1171,6 +1171,17 @@ class GeminiAnalyzer:
 - Use the common English company name when you are confident; otherwise keep the original listed company name instead of inventing one.
 - This includes `stock_name`, `trend_prediction`, `operation_advice`, `confidence_level`, nested dashboard text, checklist items, and all narrative summaries.
 """
+        if lang == "ko":
+            return base_prompt + """
+
+## 출력 언어 (최우선)
+
+- 모든 JSON 키 이름은 변경하지 않습니다.
+- `decision_type`은 반드시 `buy|hold|sell`로 유지합니다.
+- 사용자에게 표시되는 모든 텍스트 값은 반드시 한국어로 작성합니다.
+- 회사명은 한국에서 널리 통용되는 이름을 사용하며, 확실하지 않으면 원래 상장 명칭을 유지합니다.
+- `stock_name`, `trend_prediction`, `operation_advice`, `confidence_level`, 대시보드 텍스트, 체크리스트 항목, 서술형 요약 등 모든 사람이 읽는 값에 적용합니다.
+"""
         return base_prompt + """
 
 ## 输出语言（最高优先级）

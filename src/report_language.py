@@ -6,7 +6,7 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, Optional
 
-SUPPORTED_REPORT_LANGUAGES = ("zh", "en")
+SUPPORTED_REPORT_LANGUAGES = ("zh", "en", "ko")
 
 _REPORT_LANGUAGE_ALIASES = {
     "zh-cn": "zh",
@@ -22,6 +22,10 @@ _REPORT_LANGUAGE_ALIASES = {
     "en_us": "en",
     "en-gb": "en",
     "en_gb": "en",
+    "korean": "ko",
+    "ko-kr": "ko",
+    "ko_kr": "ko",
+    "kr": "ko",
 }
 
 _OPERATION_ADVICE_CANONICAL_MAP = {
@@ -50,13 +54,13 @@ _OPERATION_ADVICE_CANONICAL_MAP = {
 }
 
 _OPERATION_ADVICE_TRANSLATIONS = {
-    "strong_buy": {"zh": "强烈买入", "en": "Strong Buy"},
-    "buy": {"zh": "买入", "en": "Buy"},
-    "hold": {"zh": "持有", "en": "Hold"},
-    "watch": {"zh": "观望", "en": "Watch"},
-    "reduce": {"zh": "减仓", "en": "Reduce"},
-    "sell": {"zh": "卖出", "en": "Sell"},
-    "strong_sell": {"zh": "强烈卖出", "en": "Strong Sell"},
+    "strong_buy": {"zh": "强烈买入", "en": "Strong Buy", "ko": "강력 매수"},
+    "buy": {"zh": "买入", "en": "Buy", "ko": "매수"},
+    "hold": {"zh": "持有", "en": "Hold", "ko": "보유"},
+    "watch": {"zh": "观望", "en": "Watch", "ko": "관망"},
+    "reduce": {"zh": "减仓", "en": "Reduce", "ko": "비중 축소"},
+    "sell": {"zh": "卖出", "en": "Sell", "ko": "매도"},
+    "strong_sell": {"zh": "强烈卖出", "en": "Strong Sell", "ko": "강력 매도"},
 }
 
 _TREND_PREDICTION_CANONICAL_MAP = {
@@ -79,11 +83,11 @@ _TREND_PREDICTION_CANONICAL_MAP = {
 }
 
 _TREND_PREDICTION_TRANSLATIONS = {
-    "strong_bullish": {"zh": "强烈看多", "en": "Strong Bullish"},
-    "bullish": {"zh": "看多", "en": "Bullish"},
-    "sideways": {"zh": "震荡", "en": "Sideways"},
-    "bearish": {"zh": "看空", "en": "Bearish"},
-    "strong_bearish": {"zh": "强烈看空", "en": "Strong Bearish"},
+    "strong_bullish": {"zh": "强烈看多", "en": "Strong Bullish", "ko": "강한 상승"},
+    "bullish": {"zh": "看多", "en": "Bullish", "ko": "상승"},
+    "sideways": {"zh": "震荡", "en": "Sideways", "ko": "횡보"},
+    "bearish": {"zh": "看空", "en": "Bearish", "ko": "하락"},
+    "strong_bearish": {"zh": "强烈看空", "en": "Strong Bearish", "ko": "강한 하락"},
 }
 
 _CONFIDENCE_LEVEL_CANONICAL_MAP = {
@@ -97,9 +101,9 @@ _CONFIDENCE_LEVEL_CANONICAL_MAP = {
 }
 
 _CONFIDENCE_LEVEL_TRANSLATIONS = {
-    "high": {"zh": "高", "en": "High"},
-    "medium": {"zh": "中", "en": "Medium"},
-    "low": {"zh": "低", "en": "Low"},
+    "high": {"zh": "高", "en": "High", "ko": "높음"},
+    "medium": {"zh": "中", "en": "Medium", "ko": "보통"},
+    "low": {"zh": "低", "en": "Low", "ko": "낮음"},
 }
 
 _CHIP_HEALTH_CANONICAL_MAP = {
@@ -112,9 +116,9 @@ _CHIP_HEALTH_CANONICAL_MAP = {
 }
 
 _CHIP_HEALTH_TRANSLATIONS = {
-    "healthy": {"zh": "健康", "en": "Healthy"},
-    "average": {"zh": "一般", "en": "Average"},
-    "caution": {"zh": "警惕", "en": "Caution"},
+    "healthy": {"zh": "健康", "en": "Healthy", "ko": "양호"},
+    "average": {"zh": "一般", "en": "Average", "ko": "보통"},
+    "caution": {"zh": "警惕", "en": "Caution", "ko": "주의"},
 }
 
 _BIAS_STATUS_CANONICAL_MAP = {
@@ -129,29 +133,33 @@ _BIAS_STATUS_CANONICAL_MAP = {
 }
 
 _BIAS_STATUS_TRANSLATIONS = {
-    "safe": {"zh": "安全", "en": "Safe"},
-    "caution": {"zh": "警戒", "en": "Caution"},
-    "danger": {"zh": "危险", "en": "Danger"},
+    "safe": {"zh": "安全", "en": "Safe", "ko": "안전"},
+    "caution": {"zh": "警戒", "en": "Caution", "ko": "주의"},
+    "danger": {"zh": "危险", "en": "Danger", "ko": "위험"},
 }
 
 _PLACEHOLDER_BY_LANGUAGE = {
     "zh": "待补充",
     "en": "TBD",
+    "ko": "미정",
 }
 
 _UNKNOWN_BY_LANGUAGE = {
     "zh": "未知",
     "en": "Unknown",
+    "ko": "알 수 없음",
 }
 
 _NO_DATA_BY_LANGUAGE = {
     "zh": "数据缺失",
     "en": "Data unavailable",
+    "ko": "데이터 없음",
 }
 
 _GENERIC_STOCK_NAME_BY_LANGUAGE = {
     "zh": "待确认股票",
     "en": "Unnamed Stock",
+    "ko": "종목명 미확인",
 }
 
 _REPORT_LABELS: Dict[str, Dict[str, str]] = {
@@ -314,6 +322,86 @@ _REPORT_LABELS: Dict[str, Dict[str, str]] = {
         "analysis_model_label": "Model",
         "not_investment_advice": "AI-generated content for reference only. Not investment advice.",
         "details_report_hint": "See detailed report:",
+    },
+    "ko": {
+        "dashboard_title": "결정 대시보드",
+        "brief_title": "결정 브리핑",
+        "analyzed_prefix": "분석 완료",
+        "stock_unit": "개 종목",
+        "stock_unit_compact": "개",
+        "buy_label": "매수",
+        "watch_label": "관망",
+        "sell_label": "매도",
+        "summary_heading": "분석 요약",
+        "info_heading": "주요 업데이트",
+        "sentiment_summary_label": "시장 심리",
+        "earnings_outlook_label": "실적 전망",
+        "risk_alerts_label": "리스크 경고",
+        "positive_catalysts_label": "호재 촉매",
+        "latest_news_label": "최신 동향",
+        "core_conclusion_heading": "핵심 결론",
+        "one_sentence_label": "한 줄 결정",
+        "time_sensitivity_label": "유효 기간",
+        "default_time_sensitivity": "이번 주",
+        "position_status_label": "포지션",
+        "action_advice_label": "투자 의견",
+        "no_position_label": "미보유",
+        "has_position_label": "보유 중",
+        "continue_holding": "계속 보유",
+        "market_snapshot_heading": "시장 현황",
+        "close_label": "종가",
+        "prev_close_label": "전일 종가",
+        "open_label": "시가",
+        "high_label": "고가",
+        "low_label": "저가",
+        "change_pct_label": "등락률",
+        "change_amount_label": "등락액",
+        "amplitude_label": "변동폭",
+        "volume_label": "거래량",
+        "amount_label": "거래대금",
+        "current_price_label": "현재가",
+        "volume_ratio_label": "거래량 비율",
+        "turnover_rate_label": "회전율",
+        "source_label": "시세 출처",
+        "data_perspective_heading": "데이터 분석",
+        "ma_alignment_label": "이동평균 배열",
+        "bullish_alignment_label": "상승 배열",
+        "yes_label": "예",
+        "no_label": "아니오",
+        "trend_strength_label": "추세 강도",
+        "price_metrics_label": "가격 지표",
+        "ma5_label": "MA5",
+        "ma10_label": "MA10",
+        "ma20_label": "MA20",
+        "bias_ma5_label": "이격도(MA5)",
+        "support_level_label": "지지선",
+        "resistance_level_label": "저항선",
+        "chip_label": "수급 구조",
+        "battle_plan_heading": "매매 전략",
+        "ideal_buy_label": "최적 매수점",
+        "secondary_buy_label": "차선 매수점",
+        "stop_loss_label": "손절가",
+        "take_profit_label": "목표가",
+        "suggested_position_label": "포지션 비중",
+        "entry_plan_label": "진입 전략",
+        "risk_control_label": "리스크 관리",
+        "checklist_heading": "체크리스트",
+        "failed_checks_heading": "미통과 항목",
+        "history_compare_heading": "과거 시그널 비교",
+        "time_label": "일시",
+        "score_label": "점수",
+        "advice_label": "의견",
+        "trend_label": "추세",
+        "generated_at_label": "생성 일시",
+        "report_time_label": "생성 시각",
+        "no_results": "분석 결과 없음",
+        "report_title": "주식 분석 리포트",
+        "avg_score_label": "평균 점수",
+        "action_points_heading": "매매 가격대",
+        "position_advice_heading": "포지션 조언",
+        "analysis_model_label": "분석 모델",
+        "not_investment_advice": "AI 생성 콘텐츠로 참고용입니다. 투자 권유가 아닙니다.",
+        "details_report_hint": "상세 리포트:",
     },
 }
 
